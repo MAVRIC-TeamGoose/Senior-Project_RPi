@@ -203,7 +203,7 @@ int requestBattData()
 	battery = readNumber();
 	battery = battery << 8;
 	battery |= readNumber();
-	
+	printf("\nBatt is %d", battery);
 	return battery;	
 }
 
@@ -242,38 +242,17 @@ int main(int argc, const char * argv[])
 
 	while(1) {
 		temp = requestTemperature(); //Request the current Tiva temperature (2 bytes)
-		sleep(1);
-		proximity[0] = requestProx(PROX1DATA);       //Request data from Prox sensors (2 bytes)
-		sleep(1);
-		batterylevel = requestBattData();            //Request battery level (2 bytes)
-		/*//sleep(1);
+		proximity[0] = requestProx(PROX1DATA);
 		proximity[1] = requestProx(PROX2DATA);
-		//sleep(1);
 		proximity[2] = requestProx(PROX3DATA);
-		//sleep(1);
 		proximity[3] = requestProx(PROX4DATA);
-		//sleep(1);
 		proximity[4] = requestProx(PROX5DATA);
-		//sleep(1);
 		proximity[5] = requestProx(PROX6DATA);
-		//sleep(1);
 		proximity[6] = requestProx(PROX7DATA);
-		//sleep(1);
 		proximity[7] = requestProx(PROX8DATA);
-		//sleep(1);*/
+		requestBattData();
 		mysql_write_data(temp, proximity[0], proximity[1], proximity[2], proximity[3], proximity[4], proximity[5], proximity[6], proximity[7], batterylevel);
-		
-		//requestBattData();     //Request current battery level (2 bytes)
-		
-		//Stop motors if any proximity was below 25 centimetres
-		/*for (int i = 0; i < 8; i++) 
-		{
-			if (proximity[i] <= 25)
-			{
-				sendMotorCommand(0, 0); //Stop both motors (2 bytes)
-			}
-		}*/
-		sleep(1); //Sleep for 1 second
+		sleep(10);
 	}
 	
 	mysql_disconnect(); //Will never reach actually
